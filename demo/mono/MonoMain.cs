@@ -1,6 +1,7 @@
 using Godot;
 using GodotRollbackNetcode;
 using System.Linq;
+using GodotSteam;
 
 namespace Game
 {
@@ -24,8 +25,20 @@ namespace Game
         [Export] Button localButton;
         [Export] Button onlineButton;
 
+
+      
+
+
         public override void _Ready()
         {
+
+            GD.Print($"Steam Running: {Steam.IsSteamRunning()}");
+
+            var steamId = Steam.GetSteamID();
+            var name = Steam.GetFriendPersonaName(steamId);
+
+            GD.Print("Your Steam Name: " + name);
+
             Multiplayer.PeerConnected += OnNetworkPeerConnected;
             Multiplayer.PeerDisconnected += OnNetworkPeerDisconnected;
             Multiplayer.ServerDisconnected += OnServerDisconnected;

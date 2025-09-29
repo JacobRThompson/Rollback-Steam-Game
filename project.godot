@@ -120,3 +120,8 @@ common/enable_pause_aware_picking=true
 environment/defaults/default_environment="res://default_env.tres"
 quality/driver/driver_name="GLES2"
 vram_compression/import_etc=true
+
+[steam]
+
+initialization/app_id=480
+initialization/initialize_on_startup=true

@@ -1,0 +1,17 @@
+{
+  "profiles": {
+    "GodotRollbackNetcodeMono": {
+      "commandName": "Project",
+      "workingDirectory": ".",
+      "remoteDebugEnabled": false,
+      "nativeDebugging": true
+    },
+    "Attach To Godot": {
+      "commandName": "Executable",
+      "executablePath": "D:\\!misc tools\\Godot_v4.3-stable_mono_win64\\Godot.exe",
+      "commandLineArgs": "--path . --verbose",
+      "workingDirectory": ".",
+      "nativeDebugging": true
+    }
+  }
+}
