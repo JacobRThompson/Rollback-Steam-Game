@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://dc8issb7nr3rr"]
+
+[ext_resource type="Script" path="res://demo/mono/MonoMain.cs" id="1"]
+
+[node name="MonoMain" type="Node" node_paths=PackedStringArray("mainMenu", "connectionPanel", "hostField", "portField", "messageLabel", "syncLostLabel", "serverPlayer", "clientPlayer", "serverButton", "clientButton", "resetButton", "localButton", "onlineButton")]
+script = ExtResource("1")
+mainMenu = NodePath("")
+connectionPanel = NodePath("")
+hostField = NodePath("")
+portField = NodePath("")
+messageLabel = NodePath("")
+syncLostLabel = NodePath("")
+serverPlayer = NodePath("")
+clientPlayer = NodePath("")
+serverButton = NodePath("")
+clientButton = NodePath("")
+resetButton = NodePath("")
+localButton = NodePath("")
+onlineButton = NodePath("")

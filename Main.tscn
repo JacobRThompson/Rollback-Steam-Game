@@ -1,0 +1,232 @@
+[gd_scene load_steps=12 format=3 uid="uid://bdo2osfevge6q"]
+
+[ext_resource type="Script" path="res://demo/mono/MonoMain.cs" id="1_hwd14"]
+[ext_resource type="Texture2D" uid="uid://bbkn4rlb7n4k3" path="res://assets/default_texture.tres" id="2_sxeqh"]
+[ext_resource type="PackedScene" uid="uid://b0acdrpwdet5p" path="res://demo/mono/MonoPlayer.tscn" id="3_6w3um"]
+[ext_resource type="Environment" uid="uid://v7lrt2gogd8d" path="res://default_env.tres" id="4_p2mk6"]
+[ext_resource type="Shader" path="res://assets/vignette.gdshader" id="5_014hc"]
+[ext_resource type="Script" path="res://demo/gdscript/IPLabel.gd" id="6_34teh"]
+[ext_resource type="PackedScene" uid="uid://bogn6g5wby00g" path="res://addons/joystick/virtual_joystick.tscn" id="7_qtr70"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_wsnlo"]
+
+[sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_1euem"]
+
+[sub_resource type="Compositor" id="Compositor_dx75e"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yej4p"]
+shader = ExtResource("5_014hc")
+shader_parameter/inner_radius = 0.345
+shader_parameter/outer_radius = 1.0
+shader_parameter/vignette_strength = 1.57
+shader_parameter/dither_strength = 0.03
+shader_parameter/vignette_color = Color(0.0313726, 0.105882, 0.172549, 0.592157)
+shader_parameter/scale = Vector2(1, 0.73)
+
+[node name="Node3D" type="Node3D" node_paths=PackedStringArray("mainMenu", "connectionPanel", "hostField", "portField", "messageLabel", "syncLostLabel", "serverPlayer", "clientPlayer", "serverButton", "clientButton", "resetButton", "localButton", "onlineButton")]
+script = ExtResource("1_hwd14")
+mainMenu = NodePath("UI/MainMenu")
+connectionPanel = NodePath("UI/ConnectionPanel")
+hostField = NodePath("UI/ConnectionPanel/MarginContainer/GridContainer/HostField")
+portField = NodePath("UI/ConnectionPanel/MarginContainer/GridContainer/PortField")
+messageLabel = NodePath("UI/MarginContainer3/MessageLabel")
+syncLostLabel = NodePath("UI/MarginContainer3/SyncLostLabel")
+serverPlayer = NodePath("World/ServerPlayer")
+clientPlayer = NodePath("World/ClientPlayer")
+serverButton = NodePath("UI/ConnectionPanel/MarginContainer/GridContainer/ServerButton")
+clientButton = NodePath("UI/ConnectionPanel/MarginContainer/GridContainer/ClientButton")
+resetButton = NodePath("UI/MarginContainer/ResetButton")
+localButton = NodePath("UI/MainMenu/LocalButton")
+onlineButton = NodePath("UI/MainMenu/OnlineButton")
+
+[node name="World" type="Node3D" parent="."]
+
+[node name="ServerPlayer" parent="World" instance=ExtResource("3_6w3um")]
+position = Vector2(253, 270)
+
+[node name="ClientPlayer" parent="World" instance=ExtResource("3_6w3um")]
+position = Vector2(824, 279)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World"]
+mesh = SubResource("CapsuleMesh_wsnlo")
+
+[node name="Camera3D" type="Camera3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 0.99481, 0.101751, 0, -0.101751, 0.99481, 0, 1.59999, 5.5917)
+environment = ExtResource("4_p2mk6")
+attributes = SubResource("CameraAttributesPhysical_1euem")
+compositor = SubResource("Compositor_dx75e")
+current = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="World"]
+environment = ExtResource("4_p2mk6")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Vignette" type="TextureRect" parent="UI"]
+material = SubResource("ShaderMaterial_yej4p")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_sxeqh")
+expand_mode = 2
+
+[node name="ConnectionPanel" type="PopupPanel" parent="UI"]
+auto_translate_mode = 1
+initial_position = 1
+size = Vector2i(300, 152)
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/ConnectionPanel"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 296.0
+offset_bottom = 148.0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="GridContainer" type="GridContainer" parent="UI/ConnectionPanel/MarginContainer"]
+layout_mode = 2
+columns = 2
+
+[node name="HostLabel" type="Label" parent="UI/ConnectionPanel/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Host"
+
+[node name="HostField" type="LineEdit" parent="UI/ConnectionPanel/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "127.0.0.1"
+
+[node name="PortLabel" type="Label" parent="UI/ConnectionPanel/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Port"
+
+[node name="PortField" type="LineEdit" parent="UI/ConnectionPanel/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "9999"
+
+[node name="ServerButton" type="Button" parent="UI/ConnectionPanel/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Server"
+
+[node name="ClientButton" type="Button" parent="UI/ConnectionPanel/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Client"
+
+[node name="MainMenu" type="HBoxContainer" parent="UI"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -125.0
+offset_top = -25.0
+offset_right = 125.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+
+[node name="LocalButton" type="Button" parent="UI/MainMenu"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Play Locally"
+
+[node name="OnlineButton" type="Button" parent="UI/MainMenu"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Play Online"
+
+[node name="MarginContainer3" type="MarginContainer" parent="UI"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -250.0
+offset_right = 250.0
+offset_bottom = 400.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="MessageLabel" type="Label" parent="UI/MarginContainer3"]
+layout_mode = 2
+size_flags_vertical = 5
+text = "Message..."
+horizontal_alignment = 1
+
+[node name="SyncLostLabel" type="Label" parent="UI/MarginContainer3"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 5
+text = "Regaining sync..."
+
+[node name="MarginContainer2" type="MarginContainer" parent="UI"]
+offset_right = 100.0
+offset_bottom = 86.0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MarginContainer2"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="UI/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+text = "Mono C#"
+
+[node name="IPLabel" type="Label" parent="UI/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+text = "IP LABEL"
+script = ExtResource("6_34teh")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -116.0
+offset_top = -66.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="ResetButton" type="Button" parent="UI/MarginContainer"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+text = "RESET"
+
+[node name="PlayerControls" type="MarginContainer" parent="UI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 64
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 64
+metadata/_edit_use_anchors_ = true
+
+[node name="VirtualJoystick" parent="UI/PlayerControls" instance=ExtResource("7_qtr70")]
+layout_mode = 2
+action_left = "player1_left"
+action_right = "player1_right"
+action_up = "player1_up"
+action_down = "player1_down"
