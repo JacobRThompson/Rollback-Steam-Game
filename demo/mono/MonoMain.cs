@@ -2,12 +2,14 @@ using Godot;
 using GodotRollbackNetcode;
 using System.Linq;
 using GodotSteam;
+using Godot.Collections;
 
 namespace Game
 {
     public partial class MonoMain : Node
     {
         const string LOG_FILE_DIRECTORY = "user://detailed_logs";
+        const ulong LOBBY_NO = 999999;
 
         bool loggingEnabled = true;
 
@@ -24,10 +26,6 @@ namespace Game
         [Export] Button resetButton;
         [Export] Button localButton;
         [Export] Button onlineButton;
-
-
-      
-
 
         public override void _Ready()
         {
@@ -78,10 +76,13 @@ namespace Game
 
         private void OnServerButtonPressed()
         {
-            var peer = new ENetMultiplayerPeer();
-            if (!int.TryParse(portField.Text, out int port))
+            var peer = new SteamMultiplayerPeer();
+
+            
+            if (!ushort.TryParse(portField.Text, out ushort port))
                 return;
-            peer.CreateServer(port, 1);
+            peer.CreateHost(port, []);
+
             Multiplayer.MultiplayerPeer = peer;
             messageLabel.Text = "Listening...";
             connectionPanel.Visible = false;
@@ -90,10 +91,14 @@ namespace Game
 
         private void OnClientButtonPressed()
         {
-            if (!int.TryParse(portField.Text, out int port))
+           var lobbyOwnerId = Steam.GetLobbyOwner(LOBBY_NO);
+
+            if (!ushort.TryParse(portField.Text, out ushort port))
                 return;
-            var peer = new ENetMultiplayerPeer();
-            peer.CreateClient(hostField.Text, port);
+            var peer = new SteamMultiplayerPeer();
+
+            peer.CreateClient(lobbyOwnerId, port, []);
+
             Multiplayer.MultiplayerPeer = peer;
             messageLabel.Text = "Connecting...";
             connectionPanel.Visible = false;
