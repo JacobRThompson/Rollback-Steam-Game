@@ -22,17 +22,23 @@ public sealed partial class SteamMultiplayerPeer : MultiplayerPeerExtension
         if (!ClassDB.CanInstantiate(stringName))
             throw new Exception($"{stringName} cannot be instantiated.");
 
+        var temp = ClassDB.ClassGetMethodList(stringName);
+
+
+
         _classReference = ClassDB.Instantiate(stringName).AsGodotObject();
+        
     }
 
-    public Error CreateHost(ushort port, Array options)
+    public Error CreateHost(ushort port)
     {
-        return _classReference.Call(Methods.CreateHost, port, options).As<Error>();
+        return _classReference.Call(Methods.CreateHost, port).As<Error>();
     }
 
-    public Error CreateClient(ulong steamId, ushort port, Array options)
+    public Error CreateClient(ulong steamId, ushort port)
     {
-        return _classReference.Call(Methods.CreateClient, steamId, port, options).As<Error>();
+         
+        return _classReference.Call(Methods.CreateClient, steamId, port).As<Error>();
     }
 
     public override ConnectionStatus _GetConnectionStatus()

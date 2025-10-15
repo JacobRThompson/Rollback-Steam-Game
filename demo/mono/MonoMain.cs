@@ -81,12 +81,15 @@ namespace Game
             
             if (!ushort.TryParse(portField.Text, out ushort port))
                 return;
-            peer.CreateHost(port, []);
+            peer.CreateHost(port);
 
             Multiplayer.MultiplayerPeer = peer;
             messageLabel.Text = "Listening...";
             connectionPanel.Visible = false;
             mainMenu.Visible = false;
+
+            GD.Print($"Peer ID: {peer._GetUniqueId()}");
+            GD.Print("Connection Status: " + peer.GetConnectionStatus());
         }
 
         private void OnClientButtonPressed()
@@ -97,16 +100,23 @@ namespace Game
                 return;
             var peer = new SteamMultiplayerPeer();
 
-            peer.CreateClient(lobbyOwnerId, port, []);
+
+            peer.CreateClient(lobbyOwnerId, port);
+
 
             Multiplayer.MultiplayerPeer = peer;
             messageLabel.Text = "Connecting...";
             connectionPanel.Visible = false;
             mainMenu.Visible = false;
+
+            GD.Print($"Peer ID: {peer._GetUniqueId()}");
+            GD.Print("Connection Status: " + peer.GetConnectionStatus());
         }
 
         private async void OnNetworkPeerConnected(long peerId)
         {
+
+            GD.Print("Connected with id: " + peerId);
             messageLabel.Text = "Connected with id: " + peerId;
             SyncManager.Global.AddPeer(peerId);
 
