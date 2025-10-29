@@ -76,6 +76,8 @@ namespace Game
 
         private void OnServerButtonPressed()
         {
+           
+
             var peer = new SteamMultiplayerPeer();
 
             
@@ -83,10 +85,15 @@ namespace Game
                 return;
             peer.CreateHost(port);
 
+
+
+
             Multiplayer.MultiplayerPeer = peer;
             messageLabel.Text = "Listening...";
             connectionPanel.Visible = false;
             mainMenu.Visible = false;
+
+            Steam.ActivateGameOverlay(GameOverlayType.Friends);
 
             GD.Print($"Peer ID: {peer._GetUniqueId()}");
             GD.Print("Connection Status: " + peer.GetConnectionStatus());

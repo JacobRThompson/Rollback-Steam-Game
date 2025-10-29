@@ -67,5 +67,7 @@ namespace Game
             Position += inputVector * 8;
         }
 
+      
+
     }
 }

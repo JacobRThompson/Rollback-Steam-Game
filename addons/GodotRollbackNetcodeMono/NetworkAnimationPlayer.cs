@@ -5,15 +5,15 @@ namespace GodotRollbackNetcode
 {
     [GlobalClass]
     [Icon("res://addons/GodotRollbackNetcodeMono/Assets/NetworkAnimationPlayer.svg")]
-    public partial class NetworkAnimationPlayer : AnimationPlayer, INetworkProcess, INetworkSerializable
+    public partial class RollbackNetworkAnimationPlayer : AnimationPlayer, INetworkProcess, INetworkSerializable
     {
         [Export]
         public bool AutoReset { get; set; } = true;
 
         public override void _Ready()
         {
-            MethodCallMode = AnimationMethodCallMode.Immediate;
-            PlaybackProcessMode = AnimationProcessCallback.Manual;
+            CallbackModeMethod = AnimationCallbackModeMethod.Immediate;
+            CallbackModeProcess = AnimationCallbackModeProcess.Manual;
             AddToGroup(SyncManager.NetworkSyncGroup);
         }
 
